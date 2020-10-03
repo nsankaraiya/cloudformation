@@ -51,6 +51,7 @@
               "InstanceType" : "t2.micro",
               "Monitoring" : "false",
               "SecurityGroupIds" : ["sg-1f0b253f"],
+              "KeyName" : "myec2key",
               "Tags": [
                   {
                       "Key" : "Name",
