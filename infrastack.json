@@ -45,6 +45,7 @@
       },
       "DependsOn" : "myEC2"
     },
+
     "myEC2" : {
         "Type": "AWS::EC2::Instance",
         "Properties" : {
@@ -72,6 +73,7 @@
             }
         }
     },
+
     "ec2AttachVolume" : {
       "Type" : "AWS::EC2::VolumeAttachment",
       "Properties" : {
@@ -79,8 +81,9 @@
           "InstanceId" : { "Ref" : "myEC2" },
           "VolumeId" : { "Ref" : "ec2Volume" }
         },
-      "DependsOn" : "myEC2"
+      "DependsOn" : "ec2Volume"
     },
+
     "Outputs" : {
       "volumeName" : {
         "Description" : "EBS volume name",
