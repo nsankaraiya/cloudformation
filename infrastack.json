@@ -25,26 +25,6 @@
 
     },
     "Resources": {
-      
-      "ec2Volume" : {
-         "Type" : "AWS::EC2::Volume",
-         "Properties" : {
-            "AutoEnableIO" : "true",
-            "AvailabilityZone" : { "Fn::GetAtt" : [ "myEC2", "AvailabilityZone" ] },
-            "Encrypted": "true",
-            "Size" : "10",
-            "Tags" : [
-                  {
-                      "Key" : "Name",
-                      "Value" : "test"
-                  }
-              ],
-            "VolumeType" : "gp2"
-         },
-         "DeletionPolicy" : "Snapshot"
-      },
-      "DependsOn" : "myEC2"
-    },
 
     "myEC2" : {
         "Type": "AWS::EC2::Instance",
@@ -74,27 +54,7 @@
         }
     },
 
-    "ec2AttachVolume" : {
-      "Type" : "AWS::EC2::VolumeAttachment",
-      "Properties" : {
-          "Device" : "/dev/sdh",
-          "InstanceId" : { "Ref" : "myEC2" },
-          "VolumeId" : { "Ref" : "ec2Volume" }
-        },
-      "DependsOn" : "ec2Volume"
-    },
-
     "Outputs" : {
-      "volumeName" : {
-        "Description" : "EBS volume name",
-        "Value" : { "Ref" : "ec2Volume" },
-        "Export" : {
-          "Name" : "{$AWS::StackName}-ebsVolumeName"
-        }
-      },
-      "myEC2Name" : {
-        "Description" : "EC2 Instance Name",
-        "Value" : { "Fn::GetAtt" : [ "myEC2", "PublicIp" ] }
-      }
+
     }
 }
