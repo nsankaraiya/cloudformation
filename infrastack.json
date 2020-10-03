@@ -59,10 +59,6 @@
                     "Value": "myFirstEc2"
                 }
             ],
-            "Volumes" : {
-              "Device" : "/dev/sdh",
-              "VolumeId" : { "Ref" : "ec2Volume" }
-            },
             "UserData": {
                 "Fn::Base64": {
                     "Fn::Join": [
@@ -75,6 +71,15 @@
                 }
             }
         }
+    },
+    "ec2AttachVolume" : {
+      "Type" : "AWS::EC2::VolumeAttachment",
+      "Properties" : {
+          "Device" : "/dev/sdh",
+          "InstanceId" : { "Ref" : "myEC2" },
+          "VolumeId" : { "Ref" : "ec2Volume" }
+        },
+        "DependsOn" : "myEC2"
     },
     "Outputs": {
       "volumeName" : {
