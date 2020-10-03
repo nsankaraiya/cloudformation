@@ -36,7 +36,7 @@
             "Tags" : [
                   {
                       "Key" : "Name",
-                      "Value" : { "Fn::GetAtt" : [ "myEC2", "PrivateDnsName" ] }
+                      "Value" : "test"
                   }
               ],
             "VolumeType" : "gp2"
