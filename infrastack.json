@@ -47,7 +47,7 @@
           "Type": "AWS::EC2::Instance",
           "Properties" : {
               "DisableApiTermination" : "false",
-              "ImageId" : "ami-007a607c4abd192db",
+              "ImageId" : "ami-0ff8a91507f77f867",
               "InstanceType" : "t2.micro",
               "Monitoring" : "false",
               "SecurityGroupIds" : ["sg-1f0b253f"],
