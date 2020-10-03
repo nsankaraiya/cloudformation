@@ -85,7 +85,7 @@
         "Description" : "EBS volume name",
         "Value" : { "Ref" : "ec2Volume" },
         "Export" : {
-          "Name" : "${AWS::StackName}-ebsVolumeName"
+          "Name" : { "Fn::Sub" : "${AWS::StackName}-ebsVolumeName"}
         }
       },
       "myEC2Name" : {
