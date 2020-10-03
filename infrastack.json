@@ -70,7 +70,8 @@
                     ]
                 }
             }
-        }
+        },
+        "DependsOn" : "ec2Volume"
     },
     "ec2AttachVolume" : {
       "Type" : "AWS::EC2::VolumeAttachment",
@@ -79,7 +80,7 @@
           "InstanceId" : { "Ref" : "myEC2" },
           "VolumeId" : { "Ref" : "ec2Volume" }
         },
-        "DependsOn" : "myEC2"
+      "DependsOn" : "myEC2"
     },
     "Outputs": {
       "volumeName" : {
