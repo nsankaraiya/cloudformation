@@ -1,0 +1,64 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "",
+    "Metadata": {
+
+    },
+    "Parameters": {
+      "EPARegion" : {
+        "Type" : "String",
+        "Description" : "Enter region where you want resource provisioned",
+        "AllowedValues" : ["us-east-1", "us-west-1"],
+        "Default" : "us-east-1"
+      }
+    },
+    "Mappings": {
+
+    },
+    "Conditions": {
+
+    },
+    "Resources": {
+      
+      "EPASNSTopic": {
+        "Type": "AWS::SNS::Topic",
+        "Properties": {
+          "DisplayName": "EPA Resource Deletion Notification",
+          "Subscription": [  ],
+          "TopicName": "EPAResourceNotify"
+        }
+      },
+      
+      "EPASNSSubscription": {
+          "Type": "AWS::SNS::Subscription",
+          "Properties": {
+              "TopicArn": { "Ref" : "EPASNSTopic" },
+              "Protocol": "email",
+              "Endpoint": { "Ref" : "EPASendToEmail"},
+              "Region": { "Ref" : "EPARegion"}
+          }
+      },
+      
+      "snsTopicPolicy": {
+        "Type": "AWS::SNS::TopicPolicy",
+        "Properties":
+          {
+            "PolicyDocument": {
+              "Id":  "EPAPolicyCloudwatchSNS",
+              "Statement": [{
+                "Effect": "Allow",
+                "Principal": { 
+                  "Service": "cloudwatch.amazonaws.com" 
+                },
+                "Action": "sns:Publish",
+                "Resource": { "Ref" : "EPASNSTopic" }
+              }]
+            },
+            "Topics": [ {"Ref" : "EPASNSTopic"} ]
+          }
+      }
+    },
+    "Outputs": {
+
+    }
+}

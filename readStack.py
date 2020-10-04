@@ -1,14 +1,21 @@
 import boto3
+import json
 
 client = boto3.client('cloudformation')
 
 res_stackset = client.list_stacks(
-    StackStatusFilter=[
-        'CREATE_FAILED'|'CREATE_COMPLETE'|'ROLLBACK_FAILED'|'ROLLBACK_COMPLETE'|'DELETE_FAILED'|'UPDATE_COMPLETE'|'UPDATE_ROLLBACK_FAILED'|'UPDATE_ROLLBACK_COMPLETE',
-    ]
+  StackStatusFilter=[
+    'CREATE_COMPLETE','UPDATE_COMPLETE',
+  ]
 )
-for mystackName in res_stackset:
+print (res_stackset)
+print (res_stackset['StackSummaries'])
+temp = [res_stackset['StackSummaries'][0]['StackName']]
+for mystackName in temp:
+  print (mystackName)
   res_stack = client.describe_stacks(
-      StackName=mystackName
+    StackName=mystackName
   )
-  print res_stack.Stacks.Tags
+  for j in res_stack['Stacks'][0]['Tags']:
+    print(j['Key'])
+    print(j['Value'])
