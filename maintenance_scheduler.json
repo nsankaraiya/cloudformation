@@ -1,0 +1,77 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "",
+    "Metadata": {
+
+    },
+    "Parameters": {
+    
+    },
+    "Mappings": {
+
+    },
+    "Conditions": {
+
+    },
+    "Resources": {
+      "ScheduledRuleStackMaintenance": {
+        "Type": "AWS::Events::Rule",
+        "Properties": {
+          "Description": "Sheduled event to delete cloudformation stack based on expiry date",
+          "ScheduleExpression": "cron(5 0 * * ? *)",
+          "State": "ENABLED",
+          "Targets": [{
+            "Arn": { "Fn::GetAtt": ["StackMaintenance", "Arn"] },
+            "Id": "TargetFunctionV1"
+          }]
+        }
+      },
+      "PermissionForEventsToInvokeLambda": {
+        "Type": "AWS::Lambda::Permission",
+        "Properties": {
+          "FunctionName": { "Ref": "StackMaintenance" },
+          "Action": "lambda:InvokeFunction",
+          "Principal": "events.amazonaws.com",
+          "SourceArn": { "Fn::GetAtt": ["ScheduledRuleStackMaintenance", "Arn"] }
+        }
+      },
+      
+      "StackMaintenance": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Code": {
+              "ZipFile" : { "Fn::Join" : ["\n", [
+                "import json",
+                "import cfnresponse",
+                "def handler(event, context):",
+                "   responseValue = int(event['ResourceProperties']['Input']) * 5",
+                "   responseData = {}",
+                "   responseData['Data'] = responseValue",
+                "   cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData, \"CustomResourcePhysicalID\")"
+              ]]
+            },
+          "Handler": "",
+          "Role": "",
+          "Runtime": "",
+          "FunctionName": "",
+          "MemorySize": 128,
+          "Timeout": 5,
+          "KmsKeyArn": "",
+          "Environment": {
+            "Variables": {
+              "":"",
+              "":""
+            }
+          },
+          "VpcConfig": {
+            "SecurityGroupIds": [ ],
+            "SubnetIds": [ ]
+          },
+          "Description": ""
+        }
+      },
+      
+    "Outputs": {
+
+    }
+}
